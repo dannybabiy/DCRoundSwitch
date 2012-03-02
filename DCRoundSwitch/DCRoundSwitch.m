@@ -30,15 +30,6 @@
 #pragma mark -
 #pragma mark Init & Memory Managment
 
-- (void)dealloc
-{
-	[onTintColor release];
-	[onText release];
-	[offText release];
-
-	[super dealloc];
-}
-
 - (id)init
 {
 	if ((self = [super init]))
@@ -122,13 +113,13 @@
 	toggleLayer.contentsScale = outlineLayer.contentsScale = knobLayer.contentsScale = [[UIScreen mainScreen] scale];
 
 	// tap gesture for toggling the switch
-	UITapGestureRecognizer *tapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self 
-																						   action:@selector(tapped:)] autorelease];
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self 
+																						   action:@selector(tapped:)];
 	[self addGestureRecognizer:tapGestureRecognizer];
 
 	// pan gesture for moving the switch knob manually
-	UIPanGestureRecognizer *panGesture = [[[UIPanGestureRecognizer alloc] initWithTarget:self 
-																				 action:@selector(toggleDragged:)] autorelease];
+	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self 
+																				 action:@selector(toggleDragged:)];
 	[self addGestureRecognizer:panGesture];
 
 	// call setFrame: manually so the initial layout can be done
@@ -371,8 +362,7 @@
 {
 	if (anOnTintColor != onTintColor)
 	{
-		[onTintColor release];
-		onTintColor = [anOnTintColor retain];
+		onTintColor = anOnTintColor;
 		toggleLayer.onTintColor = anOnTintColor;
 		[toggleLayer setNeedsDisplay];
 	}
@@ -410,7 +400,6 @@
 {
 	if (newOnText != onText)
 	{
-		[onText release];
 		onText = [newOnText copy];
 		toggleLayer.onString = onText;
 		[toggleLayer setNeedsDisplay];
@@ -421,7 +410,6 @@
 {
 	if (newOffText != offText)
 	{
-		[offText release];
 		offText = [newOffText copy];
 		toggleLayer.offString = offText;
 		[toggleLayer setNeedsDisplay];
